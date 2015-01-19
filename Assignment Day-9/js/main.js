@@ -1,4 +1,3 @@
-
 function randomGen(max, min)
 {
 	if(typeof min == undefined)
@@ -27,7 +26,6 @@ function rot13Unencrypted(text)
 	var unencryptedName = text;
 
 	var encryptedName = '';
-
 	// asciiValue = unencryptedName.charCodeAt(0);		// returns ascii # @ position
 	// console.log("Before loop: " + asciiValue); 
 
@@ -38,7 +36,7 @@ function rot13Unencrypted(text)
 		{
 			console.log("Upper before sending off: " + asciiValue + " " + text[i]); 
 
-			upperAscii = upperEncrypt(asciiValue);
+			upperAscii = upperEncrypt(asciiValue);    
 			encryptedName = encryptedName + String.fromCharCode(upperAscii);
 		}
 		// or lower case
@@ -56,7 +54,6 @@ function rot13Unencrypted(text)
 	}
 	return encryptedName;
 }
-
 function upperEncrypt(asciiValue)
 {
 	// reset starts at A == 65
@@ -67,11 +64,14 @@ function upperEncrypt(asciiValue)
 	asciiValue += 13;								// adds 13 to ascii
 	console.log("Upper AsciiValue after +13: " + asciiValue)
 
-	if(asciiValue > upperHigh)
+	if(asciiValue >= upperHigh)
 	{
 		reset += asciiValue - upperHigh;
 		// asciiValue = unencryptedName.charCodeAt(i);
 		asciiValue = reset;							// give circular ascii value
+
+		console.log("Upper AsciiValue after reset: " + asciiValue);
+
 		return asciiValue;
 		// encryptedName = encryptedName + String.fromCharCode(asciiValue);
 	}
@@ -87,7 +87,6 @@ function upperEncrypt(asciiValue)
 	// return encryptedName;
 
 }
-	
 function lowerEncrypt(asciiValue)
 {
 	// reset starts at a == 97
@@ -102,7 +101,7 @@ function lowerEncrypt(asciiValue)
 	{
 		reset += asciiValue - lowerHigh;
 		asciiValue = reset;
-		console.log("Returning Lower AsciiValue: " + asciiValue)
+		console.log("Returning Lower AsciiValue and reset: " + asciiValue)
 
 		return asciiValue;
 	}
@@ -141,22 +140,64 @@ function rot13Encrypted(text)
 			// asciiValue -= 13;
 			encryptedName = encryptedName + String.fromCharCode(asciiValue);
 		}
-
 	}
 	console.log(encryptedName);
-
 }
 
 // #4
 function rotN_Unencrypted (text, n) {
 	var asciiValue = 0; 
 	var reset = 0;
-	var rot13 = n;
+	var abc = n;		//abcd
 
 	var unencryptedName = text;
 
 	var encryptedName = '';
+	if( abc < 0){
+		abc = (26 - ((0-abc) % 26));
+	}
+
+	var rot = abc % 26;
+	var out = '';
+
+	console.log("Input: " + text);
+
+	for(var i = 0; i < text.length; i++)
+	{
+		asciiValue = text.charCodeAt(i);		// get ascii value
+		// check for upper case
+		if(text.charCodeAt(i) >= 65 && text.charCodeAt(i) <= 90)
+		{
+			// check if we've passed upper limit
+			if(text.charCodeAt(i) + rot <= 90)
+			{	
+				out += String.fromCharCode(text.charCodeAt(i) + rot);
+				// console.log(out);
+			}
+			else {
+	            out += String.fromCharCode(text.charCodeAt(i) + rot - 26);
+				// console.log(out);
+			}
+
+		}
+		// check for lower case
+		else if(text.charCodeAt(i) >= 97 && text.charCodeAt(i) <= 122){
+			// check if we've passed upper limit
+			if(text.charCodeAt(i) + rot <= 122){
+				out += String.fromCharCode(text.charCodeAt(i) + rot);
+			}
+			else{
+				out += String.fromCharCode(text.charCodeAt(i) - rot);
+			}
+		}
+		// no special characters
+		else{
+			throw "Invalid special character: " + text[i];
+		}
+	}
+	return out;
 }
+
 
 // #5
 // Create a javascript function that takes an array of student names 
@@ -185,8 +226,20 @@ function stringDashes(text)
 // #7
 // Create a function that takes a string and returns a string with a dash (-) in between each 
 // character WITHOUT using .split or .join.
-function dashesNoSplitJoin (argument) {
+// tell is a special variable that works with concatDash() function
+function dashesNoSplitJoin (argument, tell) {
 	
+	var newDash = '';
+	var len = argument.length;
+	for (var i =  0; i < len; i++) {
+		if(i == len-1 && tell == undefined)
+			newDash += argument[i] ;
+		else
+			newDash += argument[i] + '-';
+
+	}
+	console.log("In dashesNoSplitJoin() :" + newDash);
+	return newDash;
 }
 
 // #8
@@ -194,7 +247,16 @@ function dashesNoSplitJoin (argument) {
 // each character without using .split or .join.
 function concatDash(str1, str2)
 {
+	// var argument = str1 + " " + str2;
+	var dashes = str1 + str2;
+	// for(var i =0; i < argument.length; i++) 
+	// {
+	// 	dashes += dashesNoSplitJoin(argument[i]);
+	// 	console.log("In concatDash() :" + dashes);
+	// }
+	dashes = dashesNoSplitJoin(dashes);
 
+	return dashes;
 }
 
 
