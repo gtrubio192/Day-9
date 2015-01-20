@@ -247,13 +247,7 @@ function dashesNoSplitJoin (argument, tell) {
 // each character without using .split or .join.
 function concatDash(str1, str2)
 {
-	// var argument = str1 + " " + str2;
 	var dashes = str1 + str2;
-	// for(var i =0; i < argument.length; i++) 
-	// {
-	// 	dashes += dashesNoSplitJoin(argument[i]);
-	// 	console.log("In concatDash() :" + dashes);
-	// }
 	dashes = dashesNoSplitJoin(dashes);
 
 	return dashes;
